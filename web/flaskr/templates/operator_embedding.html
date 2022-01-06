@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Plan Embedding</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+
+    <div class="container">
+
+        <nav class="navbar navbar-fix-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" rel="home" href="#" title="Buy Sell Rent Everyting">
+                        <img style="max-width:100px; margin-top: -7px;" src="/static/logo_black.png">
+                    </a>                    <!-- <a class="navbar-brand" href="#">DeepO</a> -->
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <div class="nav nav-pills navbar-right">
+                        <li><a href="sql_tool.html">SQL Query Tool</a></li>
+                        <li><a href="plan_history.html">Query History</a></li>
+                        <li><a href="optimization_analysis.html">Plan Optimization Analysis</a></li>
+                        <li role="presentation" class="nav-item active"><a href="#">Plan Embedding</a></li>
+                    </div>
+                    <!-- <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search..."> -->
+                    <!-- </form> -->
+                </div>
+            </div>
+        </nav>
+
+        <div class="main">
+
+            <h5>
+                <span class="glyphicon glyphicon-tasks" aria-hidden="true">Overview</span>
+                <!-- <span class="glyphicon glyphicon-cog" aria-hidden="true">ExecutePlan</span> -->
+            </h5>
+        </div>
+
+        <div class="row marketing">
+            <div class="col-lg-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">System Information</div>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Database Systems</td>
+                                <td>PostgreSQL</td>
+                            </tr>
+                            <tr>
+                                <td>Optimizer</td>
+                                <td>DeepO Extension</td>
+                            </tr>
+                                                        <tr>
+                                <td>Comment</td>
+                                <td>Learning-based query optimizer</td>
+                            </tr>
+                            <tr>
+                                <td>Number of Nodes</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Database Information</div>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Database</td>
+                                <td>Join-Order-Benchmark</td>
+                            </tr>
+                            <tr>
+                                <td>Table Number</td>
+                                <td>21</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Table Information</div>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>cast_info       </td>
+                                <td>   36278736 rows</td>
+                            </tr>
+                            <tr>
+                                <td>movie_info      </td>
+                                <td>   14859251 rows</td>
+                            </tr>
+                            <tr>
+                                <td>movie_keyword   </td>
+                                <td>    4523930 rows</td>
+                            </tr>
+                            <tr>
+                                <td>name            </td>
+                                <td>    4167536 rows</td>
+                            </tr>
+                            <tr>
+                                <td>char_name       </td>
+                                <td>    3140214 rows</td>
+                            </tr>
+                            <tr>
+                                <td>person_info     </td>
+                                <td>    2955684 rows</td>
+                            </tr>
+                            <tr>
+                                <td>movie_companies </td>
+                                <td>    2609129 rows</td>
+                            </tr>
+                            <tr>
+                                <td>title           </td>
+                                <td>    2528400 rows</td>
+                            </tr>
+                            <tr>
+                                <td>movie_info_idx  </td>
+                                <td>    1380035 rows</td>
+                            </tr>
+                            <tr>
+                                <td>aka_name        </td>
+                                <td>     901343 rows</td>
+                            </tr>
+                            <tr>
+                                <td>aka_title       </td>
+                                <td>     361472 rows</td>
+                            </tr>
+                            <tr>
+                                <td>company_name    </td>
+                                <td>     234997 rows</td>
+                            </tr>
+                            <tr>
+                                <td>complete_cast   </td>
+                                <td>     135086 rows</td>
+                            </tr>
+                            <tr>
+                                <td>keyword         </td>
+                                <td>     134170 rows</td>
+                            </tr>
+                            <tr>
+                                <td>movie_link      </td>
+                                <td>      29997 rows</td>
+                            </tr>
+                            <tr>
+                                <td>info_type       </td>
+                                <td>        113 rows</td>
+                            </tr>
+                            <tr>
+                                <td>link_type       </td>
+                                <td>         18 rows</td>
+                            </tr>
+                            <tr>
+                                <td>role_type       </td>
+                                <td>         12 rows</td>
+                            </tr>
+                            <tr>
+                                <td>kind_type       </td>
+                                <td>          7 rows</td>
+                            </tr>
+                            <tr>
+                                <td>company_type    </td>
+                                <td>          4 rows</td>
+                            </tr>
+                            <tr>
+                                <td>comp_cast_type  </td>
+                                <td>          4 rows</td>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">t-SNE Exploring</div>
+                    <img src="/static/embedding_result.png" class="img-responsive" alt="Cinque Terre" width="1000" height="1000">
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Plan Embedding Example</div>
+                    <img src="/static/plan.png" class="img-responsive" alt="Cinque Terre" width="1000" height="1000">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

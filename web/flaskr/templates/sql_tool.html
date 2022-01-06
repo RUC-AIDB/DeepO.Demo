@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SQL Query Tools</title>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+
+
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-fix-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" rel="home" href="#" title="Buy Sell Rent Everyting">
+                        <img style="max-width:100px; margin-top: -7px;" src="/static/logo_black.png">
+                    </a>                    <!-- <a class="navbar-brand" href="#">DeepO</a> -->
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <div class="nav nav-pills navbar-right">
+                        <li role="presentation" class="nav-item active"><a href="sql_tool.html">SQL Query Tool</a></li>
+                        <li><a href="plan_history.html">Query History</a></li>
+                        <li><a href="optimization_analysis.html">Plan Optimization Analysis</a></li>
+                        <li><a href="operator_embedding.html">Plan Embedding</a></li>
+                    </div>
+                    <!-- <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search..."> -->
+                    <!-- </form> -->
+                </div>
+            </div>
+        </nav>
+
+        <div class="main">
+
+            <h5>
+                <span class="glyphicon glyphicon-resize-small" aria-hidden="true">Postgres@JOB </span>
+                <span class="glyphicon glyphicon-console" aria-hidden="true">JOB</span>
+            </h5>
+
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-folder-open"></span></button>
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-floppy-save"></span></button>
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-menu-down"></span></button>
+                </div>
+
+                <div class="btn-group" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" id="Info">
+                            <span class="glyphicon glyphicon-play"></span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="eginlists">
+                            <li><a class="dropdown-item" href="#">DeepO</a></li>
+                            <li><a class="dropdown-item" href="#">Postgres</a></li>
+                        </ul>
+                    </div>
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-stop"></span></button>
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-refresh"></span></button>
+                </div>
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-search"></span></button>
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-menu-down"></span></button>
+                </div>
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-sort-by-attributes"></span></button>
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-sort-by-attributes-alt"></span></button>
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-menu-down"></span></button>
+                </div>
+
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-trash"></span></button>
+                </div>
+
+                
+            <div class="clo-md-4">
+                <p></p>
+                <p>&nbsp;</p>
+                <div>
+                    <ul class="nav nav-pills">
+                        <li role="presentation" class="active">
+                            <a href="#">
+                                SQL Editor
+                            </a>
+                        </li>
+                    </ul>   
+                    <textarea id="sqleditor" name="query" class="form-control" rows="5" placeholder="Enter your Query"></textarea>
+                </div>
+            </div>
+            
+            <div class="btn-toolbar">
+                    <button type="button" id="runPg" class="btn btn-secondary" data-loading-text="Loading...">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Run with PostgreSQL
+                    </button>
+                <button type="button" id="hint" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Optimize it!
+                </button>
+                
+                <div id="output"></div>
+            </div>
+
+            <div class="modal gray" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="width:1250px;">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalCenterTitle">Optimization Options</h4>
+                    <h5> We recommend query optimization options with confidence, please select the one you want to use.</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+
+                        <div class="container">
+                            <table class="table table-striped" style="width: 1000px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="col-xs-1">Selection</th>
+                                        <th scope="col" class="col-xs-8">Optimization Details</th>
+                                        <th scope="col" class="col-xs-2">Estimated Cost</th>
+                                        <th scope="col" class="col-xs-1">Confidence</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="x-cate" id="form">
+                               
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                        <h5>Tips: Join direction in join order in a bracket is (Outer table, Inner table)</h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="default" class="btn btn-secondary" data-dismiss="modal">Default</button>
+                    <button type="button" id="submit" class="btn btn-secondary" data-dismiss="modal">Submit</button>
+                </div>
+                </div>
+            </div>
+            </div>
+
+
+            <div>
+                <p>&nbsp;</p>
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="#">Data Output</a></li>
+                    <li role="presentation"><a href="#">Message</a></li>
+                </ul>
+                <div class="panel panel-default">
+                    <div id="loading"></div>
+                    <textarea id="showResult"  class="form-control" rows="5" placeholder="..."></textarea>
+                    
+
+                </div>
+                </div>
+
+            </div>
+
+        
+<!-- 
+            <div>
+                <p>&nbsp;</p>
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="#">Data Output</a></li>
+                    <li role="presentation"><a href="#">Message</a></li>
+                </ul>
+                                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="employee_table" class="table text-nowrap" style="overflow:scroll;">
+                            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
+                            <script>
+                                function arrayToTable(tableData) {
+                                    var table = $('<table class=\"table table-bordered\"></table>');
+                                    $(tableData).each(function (i, rowData) {
+                                        var row = $('<tr></tr>');
+                                        $(rowData).each(function (j, cellData) {
+                                            row.append($('<td>' + cellData + '</td>'));
+                                        });
+                                        table.append(row);
+                                    });
+                                    console.log(table)
+
+                                    return table;
+                                }
+
+                                $.ajax({
+                                    type: "GET",
+                                    url: "data.txt",
+                                    success: function (data) {
+                                        $('#employee_table').append(arrayToTable(Papa.parse(data).data));
+                                    }
+                                });
+                            </script>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+-->
+
+        </div>
+
+
+    </div>
+
+</body>
+
+<script>
+    var data=document.getElementById("sqleditor");
+    var btn=document.getElementById("runPg");
+    var btn_2=document.getElementById("hint");
+    var btn_3=document.getElementById("submit");
+    var btn_4=document.getElementById("default")
+    var ip='http://10.77.110.234:5002/';
+    var submit_num="0";
+    // var result=document.getElementById("showResult");
+    // var form=document.getElementById("form")
+    btn.onclick = function () {
+        var info ={
+          "sql": data.value,
+        };
+        console.log(info);
+        $.ajax({
+            url: ip+"pg_run",
+            type:'post',
+            data: info,
+            dataType:'json' ,
+            beforeSend:function(){
+                showResult.innerHTML="";
+                $("#loading").html("<img src='/static/loading.gif' />"); 
+                
+            },
+            success:function(res){
+                $("#loading").empty();
+                showResult.innerHTML=res.data;
+            },
+            error:function(){
+                alert("server error");
+            }     
+        });
+    }
+
+    btn_2.onclick = function(){
+        var info = {
+            "sql" : data.value,
+        };
+        console.log(info);
+        $.post(ip+"deepo_optimize", info,
+               function(res){
+                   var arm = res.info_arm;   //第一个data代表json,第二个data代表json里的数组或对象
+                   var cost=res.info_cost;
+                   var confidence = res.info_confidence;
+                      var str1 = "";   //声明str1，防止产生undefined
+                      for (var i = 0; i < arm.length; i++) {   //遍历
+                          str1 += "<tr cate-id='0' fid='0' onMouseOver='over()' onClick='change()' onMouseOut='out()'> "+
+                              "<td>" + i+ "</td>" +   
+                              "<td>" +arm[i]+ "</td>" +    
+                              "<td>" + cost[i]+ "</td>" +    
+                              "<td>" + confidence[i]+"</td>";   
+                      }
+                      form.innerHTML = str1; 
+        });
+    }
+    btn_3.onclick = function () {
+        var info ={
+          "selection": 0,
+        };
+        info["selection"]=submit_num;
+
+        $.ajax({  
+            url: ip+"submit",
+            type:'post',
+            data: info,
+            dataType:'json' ,
+            beforeSend:function(){
+                showResult.innerHTML="";
+                $("#loading").html("<img src='/static/loading.gif' />"); 
+                
+            },
+            success:function(res){
+                $("#loading").empty();
+                showResult.innerHTML=res.data;
+            },
+            error:function(){
+                alert("server error");
+            } 
+        });
+    }
+
+    btn_4.onclick = function () {
+        var info ={
+            "selection": "default",
+          };
+          $.ajax({            
+            url: ip+"default",
+            type:'post',
+            data: info,
+            dataType:'json' ,
+            beforeSend:function(){
+                showResult.innerHTML="";
+                $("#loading").html("<img src='/static/loading.gif' />"); 
+                
+            },
+            success:function(res){
+                $("#loading").empty();
+                showResult.innerHTML=res.data;
+            },
+            error:function(){
+                alert("server error");
+            }             
+        });
+    }
+
+
+    function change(change) {
+		var oObj = window.event.srcElement;
+		//alert(change.tagName.toLowerCase());
+		if(oObj.tagName.toLowerCase() == "td"){   
+			var oTr = oObj.parentNode;   
+			for(var i=0; i<document.all.form.rows.length; i++)   {   
+				document.all.form.rows[i].style.backgroundColor   =   "";   
+				document.all.form.rows[i].tag = false;   
+			}
+            submit_num=oObj.parentElement.rowIndex;  
+            console.log(submit_num);
+			oTr.style.backgroundColor = "#CCCCFF";   
+			oTr.tag = true;   
+		}
+	}
+    //鼠标点击另外一行时关闭已选行变色
+	function out() {
+		var oObj = event.srcElement;
+		if(oObj.tagName.toLowerCase() == "td"){
+			var oTr = oObj.parentNode;
+			if(!oTr.tag) oTr.style.backgroundColor = "";
+		}
+	}
+	//鼠标移动到选择行上时的行变色
+	function over(){   
+		var oObj = event.srcElement;
+		if(oObj.tagName.toLowerCase() == "td"){   
+		var oTr = oObj.parentNode;
+		if(!oTr.tag) oTr.style.backgroundColor = "#E1E9FD";
+		}
+	}
+
+   
+</script>
